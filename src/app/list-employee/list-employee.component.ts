@@ -1,14 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-list-employee',
+  templateUrl: './list-employee.component.html',
+  styleUrls: ['./list-employee.component.css']
 })
-export class AppComponent {
-  title = 'angularAssignment-1';
+export class ListEmployeeComponent {
 
-  existingEmployeeDetails: object[] = [
+  @Input() inputData: {
+    code: number;
+    name: string;
+    gender: string;
+    salary: number;
+    dob: string;
+  }[] = [];
+
+  existingEmployeeDetails: {
+    code: number;
+    name: string;
+    gender: string;
+    salary: number;
+    dob: string;
+  }[] = [
     {
       code: 1001,
       name: 'Supriya',
@@ -37,31 +50,35 @@ export class AppComponent {
     name: string;
     gender: string;
     salary: number;
-    dob: Date;
+    dob: string;
   }[] = [];
+
+  employee1 = 'employeeDet';
 
   employee(employeeInfo: {
     code: number;
     name: string;
     gender: string;
     salary: number;
-    dob: Date;
+    dob: string;
   }) {
     if (employeeInfo.salary > 0) {
-      console.log(
-        employeeInfo.code +
-          ' ' +
-          employeeInfo.name +
-          ' ' +
-          employeeInfo.gender +
-          ' ' +
-          employeeInfo.salary +
-          ' ' +
-          employeeInfo.dob
-      );
       this.newEmployeeDetails.push(employeeInfo);
     } else {
       alert('salary should be greater than zero');
     }
   }
+
+  ngDoCheck() {
+    if (this.inputData.length <= 0) {
+      return;
+    }
+
+    this.existingEmployeeDetails = [
+      ...this.existingEmployeeDetails,
+
+      this.inputData[this.inputData.length - 1],
+    ];
+  }
+
 }
